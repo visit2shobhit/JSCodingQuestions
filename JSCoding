@@ -1,0 +1,298 @@
+Debouncing Implementation
+
+function getData(){
+  console.log('test')
+}
+
+function myDebounce(callback,delay){
+  let timer;
+  return function(...args){
+    if(timer){
+      clearTimeout(timer)
+    }
+    else{
+      setTimeout(()=>{
+        callback();
+      },delay)
+    }
+  } 
+}
+
+const debouncing = myDebounce(getData,1000)
+
+THROTTLING IMPLEMENTATION
+
+const throttle = (cb,delay) => {
+  return function(...args){
+    document.getElementById('myid').disabled = true;
+    setTimeout(()=>{
+      cb()
+    },delay)
+  }
+}
+
+
+
+const myThrootle = throttle(()=>{
+  document.getElementById('myid').disabled = false;
+  console.log('Clicked');
+},1000)
+
+
+Sort the Array
+let arr = [5,10,2,12,9,7,1,11]
+console.log(arr,'Original Array')
+for(var i=0;i<arr.length;i++){
+  if(arr[i]<arr[i+1]){
+    let temp = arr[i];
+    arr[i] = arr[i+1];
+    arr[i+1] = temp;
+    i=-1;
+  }
+}
+console.log(arr,'Sorted Array')
+
+Count the duplicate numbers in array
+let newarr = [2,4,4,3,2,1]
+let countArray = {};
+for(var i=0; i<newarr.length;i++){
+  let value = newarr[i];
+  if(countArray[value]){
+    countArray[value] = countArray[value]+1;
+  }
+  else{
+    countArray[value] = 1;
+  }
+}
+
+console.log(countArray,'countArray');
+
+Count Duplicate Characters in string
+let string = 'Indivisibilities';
+var freq = {};
+for (var i=0; i<string.length;i++) {
+    var character = string[i];
+    if (freq[character]) {
+       freq[character]++;
+    } else {
+       freq[character] = 1;
+    }
+}
+console.log(freq,'Remove Duplicate character from string')
+
+Merge two arrays using spread operator.
+let arr1 = [1,5,8,10];
+let arr2 = [2,4,6,9];
+let mergedArray = [...arr1,...arr2];
+console.log(mergedArray,'mergedArray')
+
+Scope Chain
+
+if(true){
+  let i=1
+  {
+    console.log(i);
+    let i =2;  // We will get reference error
+    console.log(i);
+  }
+  console.log(i)
+}
+
+Function Curryting - It means that breaking in to sequence of function in to multiple argument.
+function Add(num1,num2,num2){
+  return num1+num2+num3;
+}
+
+function Add(num1){
+  return function(num2){
+    return function(num3){
+      return num1+num2+num3;
+    }
+  }
+}
+
+Immediatly Invoked Function
+
+(function Add(num1,num2){
+  return num1+num2;
+})();
+
+Sort the array using sort method in javascript
+
+const cb = function(a,b){
+  return a-b;
+}
+
+arr.sort(cb);
+
+Reverse the string
+let str = 'abcd';
+function reverseString(str){
+let result = '';
+for(var i=str.length;i>=0;i--){
+  if(str[i]){
+      result = result+str[i]
+  }
+}
+return result;
+}
+let reverse = reverseString(str);
+console.log(reverse)
+
+Program to Flatten Object
+
+const obj = {
+    A:2,
+    B:4,
+    C:{
+        D:6,
+        E:[3,6]
+    },
+}
+
+function flattenObj(obj, parentKey=""){
+  let finalObj = {};  
+  for(let key in  obj){
+    const newKey = parentKey + key;
+    const value = obj[key];
+    if(typeof value === 'object') {
+      let flatVal = flattenObj(obj[key],(newKey + "."));
+      finalObj = {...finalObj, ...flatVal};
+    }
+    else finalObj[newKey] = value;
+  }
+  return finalObj;
+}
+
+ 
+let result = flattenObj(obj,'')
+console.log(result,'RESULT')
+
+
+Program to Flatten the Array
+let ar = [
+  [1,2],
+  [3,4],
+  [5,6,[7,8],9],
+  [11,12]
+];
+
+// console.log(arr.flat(2));
+
+function flattenArray(arr,depth=1){
+  let result = [];
+  arr.forEach(arr=>{
+    if(Array.isArray(arr) && depth > 0){
+      result.push(...flattenArray(arr,depth-1))
+    }
+    else{
+      result.push(arr)
+    }
+  })
+  return result;
+}
+console.log(flattenArray(ar,2))
+
+
+
+Create table of two using closure
+function printTable(number){
+  for(let i = 1; i <= 10; i++) {
+    const result = i * number;
+    console.log(result);
+}
+}
+
+printTable(2);
+
+
+Second Largest Number
+
+let arr = [2,5,4,15,8,12];
+let num = arr.length;
+function findLargestNumber(arr,num){
+  let largestNumber = secondLargestNumber = -1212
+  if(num<2){
+    console.log('Array Must have two elements')
+  }
+  else{
+    for(i=0;i<arr.length;i++){
+      if(arr[i] > largestNumber){
+        largestNumber = arr[i]
+      }
+    }
+    for(j=0;j<arr.length;j++){
+      if(arr[j] > secondLargestNumber && arr[j] < largestNumber){
+        secondLargestNumber = arr[j]
+      }
+    }
+  }
+  return secondLargestNumber;
+}
+let largestNumber = findLargestNumber(arr,num);
+console.log(secondLargestNumber,'secondLargestNumssber');
+
+Polyfill for promise.all
+
+function mypromiseAll(promises){
+  let result = [];
+   return new Promise((resolve,reject)=>{
+    promises.forEach((p,index)=>{
+      p.then((res)=>{
+        result.push(res);
+        if(index === promises.length-1){
+          resolve(result)
+        }
+      })
+      .catch(error=>reject(error))
+    });
+    
+  });
+}
+
+let promises = [Promise.resolve('Promise1'),Promise.resolve('Promise13'),Promise.reject('Bye')]
+mypromiseAll(promises).then((value)=>console.log(value)).catch((error)=>{
+  console.log(error)
+});
+
+Polyfill for Map
+
+array.map(currentElement,index,array)
+
+Array.prototype.mymap = function (cb) {
+  let result = [];
+  for(let i=0;i<this.length;i++){
+    result.push(cb(this[i],i,this));
+  }
+  return result;
+}
+
+Polyfill for filter
+Array.prototype.myfilter = function(cb){
+  let result = [];
+  for(let i=0;i<this.length;i++){
+    if(cb(this[i],i,this)){
+      result.push(this[i])
+    }
+  }
+
+  let arr = [3,4,5,9,10];
+  const lessthanthree = arr.myfilter((num)=>{
+    return num <4
+  })
+}
+
+Polyfill for reduce
+arr.reduce((acc,currentElement,index,array),initialValue)
+Array.prototype.myreduce = function (cb,iniitialValue){
+  var accumulator = initialValue;
+  for(let i=0;i<this.length;i++){
+    accumulator = accumulator ? cb(accumulator,this[i],i,this) : this[i]
+  }  
+  return accumulator;
+}
+
+const arr = [1,2,3,4];
+arr.myreduce((acc,currentValue,index,array)=>{
+  return acc+curr;
+},0);
